@@ -316,13 +316,13 @@
 				position: fixed
 				left: 32px
 				bottom: 22px
-				transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+				transition: all 0.2s cubic-bezier(0.49, -0.29, 0.75, 0.41)
 				.inner
 					width: 16px
 					height: 16px
 					border-radius: 50%
 					background: rgb(0,160,220)
-					transition: all 0.4s linear
+					transition: all 0.2s linear
 		.shopcart-list
 			position:absolute
 			top: 0

@@ -39,7 +39,7 @@
 			</div>
 			<shopcart :selectFoods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" ref="shopcart"></shopcart>
 		</div>
-		<food :food="selectedFood" ref="food"></food>
+		<food :food="selectedFood" ref="food" @add="addFood"></food>
 	</div>
 </template>
 
@@ -207,7 +207,6 @@
 							bg-image('img/invoice_3')
 						&.special
 							bg-image('img/special_3')
-
 		.foods-wrapper
 			flex: 1
 			.title
