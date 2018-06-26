@@ -18,7 +18,8 @@
 
 <script type="text/ecmascript-6">
 	import header from './components/header/header'
-	import goods from './components/goods/goods'
+	import  goods from './components/goods/goods'
+	import ratings from './components/ratings/ratings'
 
 	const ERR_OK = 0;
 

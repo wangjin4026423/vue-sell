@@ -31,6 +31,22 @@
 				<div class="ratings">
 					<h1 class="title">商品评价</h1>
 					<ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings" @select="selectRating" @toggle="toggleContent"></ratingselect>
+					<div class="rating-wrapper">
+						<ul v-show="food.ratings && food.ratings.length">
+							<li class="rating-item border-1px" v-for="rating in food.ratings" v-show="needShow(rating.rateType,rating.text)">
+								<div class="user">
+									<span class="name">{{rating.username}}</span>
+									<img width="12" height="12" :src="rating.avatar" alt="" class="avatar">
+								</div>
+								<div class="time">{{rating.rateTime | formatDate}}</div>
+								<p class="text">
+									<span :class="{'icon-thumb_up':rating.rateType === 0,'icon-thumb_down':rating.rateType === 1}"></span>
+									{{rating.text}}
+								</p>
+							</li>
+						</ul>
+						<div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -40,9 +56,12 @@
 <script type="text/ecmascript-6">
 	import BScroll from 'better-scroll'
 	import Vue from 'vue'
+	import {formatDate} from '../../common/js/date'
 	import cartcontrol from '../cartcontrol/cartcontrol'
 	import ratingselect from '../ratingSelect/ratingSelect'
 
+	// const POSITIVE = 0;
+	// const NEGATIVE = 1;
 	const ALL = 2;
 
 	export default {
@@ -68,7 +87,7 @@
 		methods: {
 			show() {
 				this.showFlag = true;
-				this.selectType = 1;
+				this.selectType = ALL;
 				this.onlyContent = true;
 				this.$nextTick(() => {
 					if (!this.scroll) {
@@ -101,6 +120,22 @@
 				this.$nextTick(() => {
 					this.scroll.refresh();
 				})
+			},
+			needShow(type,text) {
+				if (this.onlyContent && !text) {
+					return false;
+				}
+				if (this.selectType === ALL) {
+					return true;
+				} else {
+					return type === this.selectType;
+				}
+			}
+		},
+		filters: {
+			formatDate(time) {
+				let date = new Date(time);
+				return formatDate(date,'yyyy-MM-dd hh:mm');
 			}
 		},
 		components:{
@@ -127,7 +162,7 @@
 		&.move-enter, &.move-leave-active
 			transform: translate3d(100%, 0, 0)
 		.food-content
-			background: #fff
+			background: #f3f5f7
 			border-bottom: 1px solid rgba(7,17,27,0.1)
 			margin-bottom: 16px
 			.image-header
@@ -151,8 +186,11 @@
 						font-size: 20px
 						color: #fff
 			.content
+				background: #fff
 				position: relative
 				padding:18px
+				margin-bottom:16px
+				border-bottom:1px solid rgba(7,17,27,0.1)
 				.title
 					margin-bottom: 8px
 					font-size: 14px
@@ -232,4 +270,28 @@
 				color:rgb(7,17,27)
 				font-weight: 700
 				margin-bottom: 6px
+			.rating-wrapper
+				padding:0 18px
+				font-size:0
+				.rating-item
+					padding:16px 0
+					border-1px(rgba(7, 17, 27, 0.1))
+					.user,.time
+						font-size:10px
+						line-height:12px
+						color: rgb(147,153,159)
+						margin-bottom:6px
+					.user
+						float: right
+						.name
+							margin-right:6px
+					.text
+						color: rgb(7,17,27)
+						font-size:	12px
+						line-height:16px
+						.icon-thumb_up,.icon-thumb_down
+							color: rgb(0,160,220)
+							line-height:16px
+						.icon-thumb_down
+							color: rgb(147,153,159)
 </style>

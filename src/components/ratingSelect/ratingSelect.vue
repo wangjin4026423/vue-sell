@@ -1,7 +1,7 @@
 <template>
 	<div class="ratingselect">
 		<div class="rating-type">
-			<span class="block positive" :class="{'active':selectType === 2}" @click="select(2,$event)">{{desc.all}}<span class="count">{{ratings.length}}</span></span>
+			<span class="block positive" :class="{'active':selectType === 2}" @click="select(2,$event)">{{desc.all}}<span class="count">{{all.length}}</span></span>
 			<span class="block positive" :class="{'active':selectType === 0}" @click="select(0,$event)">{{desc.positive}}<span class="count">{{positives.length}}</span></span>
 			<span class="block negative" :class="{'active':selectType === 1}" @click="select(1,$event)">{{desc.negative}}<span class="count">{{negatives.length}}</span></span>
 		</div>
@@ -18,6 +18,18 @@
 
 	export default {
 		name: "ratingselect",
+		data() {
+			return {
+				selectType: {
+					type:Number,
+					default:ALL
+				},
+				onlyContent: {
+					type:Boolean,
+					default: false
+				}
+			}
+		},
 		props: {
 			ratings: {
 				type:Array,
@@ -25,14 +37,7 @@
 					return [];
 				}
 			},
-			selectType: {
-				type:Number,
-				default:ALL
-			},
-			onlyContent: {
-				type:Boolean,
-				default: false
-			},
+
 			desc: {
 				type:Object,
 				default() {
@@ -61,14 +66,31 @@
 			}
 		},
 		computed: {
+			all() {
+				return this.ratings.filter((rating) => {
+					if (!this.onlyContent){
+						return (rating.rateType === POSITIVE || rating.rateType === NEGATIVE);
+					} else {
+						return (rating.text !== "");
+					}
+				})
+			},
 			positives() {
 				return this.ratings.filter((rating) => {
-					return rating.rateType === POSITIVE;
+					if (!this.onlyContent){
+						return rating.rateType === POSITIVE;
+					} else {
+						return (rating.rateType === POSITIVE && rating.text !== "");
+					}
 				})
 			},
 			negatives() {
 				return this.ratings.filter((rating) => {
-					return rating.rateType === NEGATIVE;
+					if (!this.onlyContent){
+						return rating.rateType === NEGATIVE;
+					} else {
+						return (rating.rateType === NEGATIVE && rating.text !== "");
+					}
 				})
 			}
 		}
