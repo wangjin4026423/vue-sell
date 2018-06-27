@@ -28,6 +28,10 @@
 						</div>
 					</li>
 				</ul>
+				<div class="favorite" @click="toggleFavorite">
+					<span class="icon-favorite" :class="{'active':favorite}"></span>
+					<span class="text">{{favoriteText}}</span>
+				</div>
 			</div>
 			<div class="bulletin">
 				<h1 class="title">公告与活动</h1>
@@ -76,7 +80,8 @@
 		},
 		data() {
         	return {
-        		goods:[]
+        		goods:[],
+				favorite:false
 			}
 		},
 		methods:{
@@ -106,6 +111,9 @@
 						}
 					});
 				}
+			},
+			toggleFavorite() {
+        		this.favorite = !this.favorite;
 			}
 		},
 		computed:{
@@ -119,6 +127,9 @@
 					});
 				});
 				return foods;
+			},
+			favoriteText() {
+				return this.favorite? '已收藏' : '收藏';
 			}
 		},
 		watch: {
@@ -154,6 +165,7 @@
 		background: #f3f5f7
 		overflow: hidden
 		.overview
+			position: relative
 			background: #fff
 			padding:0 18px
 			margin-bottom: 18px
@@ -201,6 +213,25 @@
 						font-size:10px
 						.stress
 							font-size:24px
+			.favorite
+				position: absolute
+				width: 50px
+				right: 11px
+				top: 18px
+				text-align: center
+				.icon-favorite
+					display: block
+					margin-bottom:4px
+					line-height:24px
+					font-size:24px
+					color: #d4d6d9
+					&.active
+						color: rgb(240,20,20)
+				.text
+					text-align: center
+					line-height:10px
+					font-size:10px
+					color: rgb(77,85,93)
 		.bulletin
 			font-size: 0
 			padding: 18px
